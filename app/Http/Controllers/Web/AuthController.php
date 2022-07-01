@@ -50,6 +50,6 @@ class AuthController extends Controller
      */
     public function callback(SocialLoginRequest $request): RedirectResponseAlias
     {
-        $this->webResponse($this->service->callback( $request->query('provider')), 'dashboard');
+        return $this->webResponse($this->service->callback( $request->query('provider')), 'dashboard');
     }
 }

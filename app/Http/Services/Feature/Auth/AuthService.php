@@ -43,16 +43,14 @@ class AuthService extends ResponseService
         try {
             $socialUser = Socialite::driver( $provider)->stateless()->user();
             $user = $this->userService->firstWhere(['email' => $socialUser->email]);
+//            dd($socialUser);
             $user
-                ? $this->userService->update( $user->id, $this->userService->formatUserDataForSocialLogin($socialUser['avatar'], $provider))
-                : $user = $this->userService->create( $this->userService->formatUserDataForSocialSignup($socialUser, $provider));
+                ? $this->userService->update( $user->id, $this->userService->formatUserDataForSocialLogin($socialUser->user['picture'], $provider))
+                : $user = $this->userService->create( $this->userService->formatUserDataForSocialSignup($socialUser->user, $provider));
 
 //            $authorization = $this->_authorize( $user);
 
-            $valid = Auth::attempt([
-                'email' => $user['email'],
-                'password' => $user['password']
-            ]);
+            $valid = Auth::loginUsingId($user->id);
             if (!$valid)  {
                 return $this->response()->error('Email or password is incorrect');
             }
