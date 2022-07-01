@@ -1,25 +1,71 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('user.layout')
 
-    <title>Laravel</title>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
+@section('style')
     <style>
-        body {
-            font-family: 'Nunito', sans-serif;
+        .arena {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .arena .row {
+            display: flex;
+            gap: 0.5rem;
+            height: 5rem;
+            justify-content: center;
+        }
+        .arena .row .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 5rem;
+            width: 5rem;
+            background: #6b7280;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: 0.1s;
+            border-radius: 0.25rem;
+        }
+        .arena .row .cell:hover {
+            background: #5b6270;
         }
     </style>
-</head>
-<body class="antialiased">
-<div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-    <div>
-        Dashboard
+@endsection
+
+@section('content')
+    <div class="arena" id="arena">
+        Game
     </div>
-</div>
-</body>
-</html>
+@endsection
+
+@section('script')
+    <script>
+        let grid = ``
+        for(let r=0; r<3; r++) {
+            grid += `<div class="row" id="row_${r}" data-row="${r}">`
+            for(let c=0; c<3; c++) {
+                grid += `<div class="cell" id="cell_${r}_${c}" data-row="${r}" data-col="${c}"></div>`
+            }
+            grid += `</div>`
+        }
+
+        document.addEventListener('DOMContentLoaded', initiateApp)
+
+        function initiateApp () {
+            let arena = document.getElementById('arena')
+            arena.innerHTML = grid
+            arena.addEventListener('click', handleClick)
+
+        }
+        function handleClick(event) {
+            if (event.target.classList.contains('cell')) {
+                if (event.target.innerText) {
+                    event.target.innerText = '';
+                } else event.target.innerText = 'x';
+            }
+        }
+    </script>
+@endsection
