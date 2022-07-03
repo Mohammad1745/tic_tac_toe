@@ -12,12 +12,20 @@
     <style>
         body {
             font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper {
+            padding-left: 10vw;
+            padding-right: 10vw;
         }
     </style>
     @yield('style')
 </head>
 <body class="antialiased">
- @yield('content')
+ <div class="wrapper">
+     @yield('content')
+ </div>
 
  @yield('script')
 </body>
